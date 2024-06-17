@@ -1,0 +1,305 @@
+[
+    {
+        "id": "dd6afc3ce0b74be6",
+        "type": "tab",
+        "label": "Send Data to Arduino IDE",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "78746b2a7baaa451",
+        "type": "mysql",
+        "z": "dd6afc3ce0b74be6",
+        "mydb": "fa965694a4e7a12c",
+        "name": "",
+        "x": 840,
+        "y": 140,
+        "wires": [
+            [
+                "8bab41fbe3119ae7"
+            ]
+        ]
+    },
+    {
+        "id": "8bab41fbe3119ae7",
+        "type": "function",
+        "z": "dd6afc3ce0b74be6",
+        "name": "Merge Result from Query Database",
+        "func": "if (msg.payload.length > 0) {\n  msg.payload = msg.payload[0].UID + \";\" + msg.payload[0].SHUFFLE;\n} else {\n  msg.payload = \"Empty\";\n}\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1120,
+        "y": 140,
+        "wires": [
+            [
+                "b4265ed18c0f7add",
+                "99ae636ebe737a18"
+            ]
+        ]
+    },
+    {
+        "id": "3cf897d885189a10",
+        "type": "serial out",
+        "z": "dd6afc3ce0b74be6",
+        "name": "",
+        "serial": "7cb1fc58c47d0193",
+        "x": 1370,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "b4265ed18c0f7add",
+        "type": "base64",
+        "z": "dd6afc3ce0b74be6",
+        "name": "",
+        "action": "",
+        "property": "payload",
+        "x": 1040,
+        "y": 420,
+        "wires": [
+            [
+                "3cf897d885189a10",
+                "33840e5891419dac"
+            ]
+        ]
+    },
+    {
+        "id": "94b42c82b83a61de",
+        "type": "function",
+        "z": "dd6afc3ce0b74be6",
+        "name": "Query to Read Database",
+        "func": "var value=JSON.parse(JSON.stringify(msg.payload));\nvalue=msg;\nif(msg.payload.Signal == 1){\n    msg.topic = 'SELECT UID, SHUFFLE FROM `nfc_card_data`';\n}\nif(msg.Signal == 1){\n    msg.topic = 'SELECT UID, SHUFFLE FROM `nfc_card_data`';\n}\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 610,
+        "y": 140,
+        "wires": [
+            [
+                "78746b2a7baaa451"
+            ]
+        ]
+    },
+    {
+        "id": "18bba392e628b3b0",
+        "type": "json",
+        "z": "dd6afc3ce0b74be6",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": true,
+        "x": 330,
+        "y": 580,
+        "wires": [
+            [
+                "6d7e0b5d80faeb91",
+                "b89a9cbfb1ce7939",
+                "94b42c82b83a61de"
+            ]
+        ]
+    },
+    {
+        "id": "88bf5b8e665f560d",
+        "type": "mysql",
+        "z": "dd6afc3ce0b74be6",
+        "mydb": "fa965694a4e7a12c",
+        "name": "",
+        "x": 960,
+        "y": 580,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "354662578e30e78c",
+        "type": "serial in",
+        "z": "dd6afc3ce0b74be6",
+        "name": "",
+        "serial": "7cb1fc58c47d0193",
+        "x": 70,
+        "y": 580,
+        "wires": [
+            [
+                "18bba392e628b3b0",
+                "3ba003bd5c89e7f9"
+            ]
+        ]
+    },
+    {
+        "id": "6d7e0b5d80faeb91",
+        "type": "function",
+        "z": "dd6afc3ce0b74be6",
+        "name": "Arduino Data to Database",
+        "func": "var value=JSON.parse(JSON.stringify(msg.payload));\nvalue=msg;\nvar Data1 = msg.payload.UID;\nvar Data2 = msg.payload.Data;\nvar Data3 = msg.payload.Shuffle;\nmsg.payload = [Data1, Data2, Data3];\nmsg.topic = 'INSERT INTO nfc_card_data(UID, Data, Shuffle) VALUES (?,?,?);';\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 630,
+        "y": 580,
+        "wires": [
+            [
+                "88bf5b8e665f560d"
+            ]
+        ]
+    },
+    {
+        "id": "b89a9cbfb1ce7939",
+        "type": "function",
+        "z": "dd6afc3ce0b74be6",
+        "name": "Update Database",
+        "func": "var value=JSON.parse(JSON.stringify(msg.payload));\nvalue=msg;\nif(msg.payload.Update == 1){\n    msg.topic = 'DELETE FROM nfc_card_data';\n}\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 610,
+        "y": 700,
+        "wires": [
+            [
+                "88bf5b8e665f560d",
+                "c1237c857c23f162"
+            ]
+        ]
+    },
+    {
+        "id": "c1237c857c23f162",
+        "type": "debug",
+        "z": "dd6afc3ce0b74be6",
+        "name": "Result [Debug]",
+        "active": false,
+        "tosidebar": false,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 980,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "3ba003bd5c89e7f9",
+        "type": "debug",
+        "z": "dd6afc3ce0b74be6",
+        "name": "Debug Input",
+        "active": true,
+        "tosidebar": true,
+        "console": true,
+        "tostatus": true,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "payload",
+        "statusType": "auto",
+        "x": 240,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "b5733313080d1564",
+        "type": "inject",
+        "z": "dd6afc3ce0b74be6",
+        "name": "Inisialisasi Start Time",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "Signal",
+                "v": "1",
+                "vt": "num"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "10",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 300,
+        "y": 140,
+        "wires": [
+            [
+                "94b42c82b83a61de"
+            ]
+        ]
+    },
+    {
+        "id": "99ae636ebe737a18",
+        "type": "debug",
+        "z": "dd6afc3ce0b74be6",
+        "name": "Result [Debug]",
+        "active": true,
+        "tosidebar": true,
+        "console": true,
+        "tostatus": true,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "payload",
+        "statusType": "auto",
+        "x": 1390,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "33840e5891419dac",
+        "type": "debug",
+        "z": "dd6afc3ce0b74be6",
+        "name": "Result [Debug]",
+        "active": true,
+        "tosidebar": true,
+        "console": true,
+        "tostatus": true,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "payload",
+        "statusType": "auto",
+        "x": 1330,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "fa965694a4e7a12c",
+        "type": "MySQLdatabase",
+        "name": "DB NFC",
+        "host": "127.0.0.1",
+        "port": "3306",
+        "db": "nfc_db",
+        "tz": "",
+        "charset": "UTF8"
+    },
+    {
+        "id": "7cb1fc58c47d0193",
+        "type": "serial-port",
+        "name": "Arduino Port",
+        "serialport": "COM4",
+        "serialbaud": "9600",
+        "databits": "8",
+        "parity": "none",
+        "stopbits": "1",
+        "waitfor": "",
+        "dtr": "none",
+        "rts": "none",
+        "cts": "none",
+        "dsr": "none",
+        "newline": "\\n",
+        "bin": "false",
+        "out": "char",
+        "addchar": "",
+        "responsetimeout": "10000"
+    }
+]
