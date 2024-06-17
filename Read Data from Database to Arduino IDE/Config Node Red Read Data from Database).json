@@ -1,0 +1,134 @@
+[
+    {
+        "id": "083475eaf02a0556",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "8f189ed5933b17d2",
+        "type": "mysql",
+        "z": "083475eaf02a0556",
+        "mydb": "fa965694a4e7a12c",
+        "name": "",
+        "x": 880,
+        "y": 320,
+        "wires": [
+            [
+                "f8d9d1cb15be450d"
+            ]
+        ]
+    },
+    {
+        "id": "99acca113de93d94",
+        "type": "function",
+        "z": "083475eaf02a0556",
+        "name": "Query to Read Database",
+        "func": "msg.topic = 'SELECT UID, SHUFFLE FROM `nfc_card_data`';\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 650,
+        "y": 320,
+        "wires": [
+            [
+                "8f189ed5933b17d2"
+            ]
+        ]
+    },
+    {
+        "id": "1d1006deccfc7ec8",
+        "type": "inject",
+        "z": "083475eaf02a0556",
+        "name": "Initiate Trigger",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "Signal",
+                "v": "1",
+                "vt": "num"
+            }
+        ],
+        "repeat": "5",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "0.1",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 380,
+        "y": 320,
+        "wires": [
+            [
+                "99acca113de93d94"
+            ]
+        ]
+    },
+    {
+        "id": "f8d9d1cb15be450d",
+        "type": "function",
+        "z": "083475eaf02a0556",
+        "name": "Merge Result from Query Database",
+        "func": "if (msg.payload.length > 0) {\n  msg.payload = msg.payload[0].UID + \";\" + msg.payload[0].SHUFFLE;\n} else {\n  msg.payload = \"Empty\";\n}\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1120,
+        "y": 320,
+        "wires": [
+            [
+                "c147e94b105260a7"
+            ]
+        ]
+    },
+    {
+        "id": "c147e94b105260a7",
+        "type": "serial out",
+        "z": "083475eaf02a0556",
+        "name": "",
+        "serial": "7cb1fc58c47d0193",
+        "x": 1390,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "fa965694a4e7a12c",
+        "type": "MySQLdatabase",
+        "name": "DB NFC",
+        "host": "127.0.0.1",
+        "port": "3306",
+        "db": "nfc_db",
+        "tz": "",
+        "charset": "UTF8"
+    },
+    {
+        "id": "7cb1fc58c47d0193",
+        "type": "serial-port",
+        "name": "Arduino Port",
+        "serialport": "COM4",
+        "serialbaud": "9600",
+        "databits": "8",
+        "parity": "none",
+        "stopbits": "1",
+        "waitfor": "",
+        "dtr": "none",
+        "rts": "none",
+        "cts": "none",
+        "dsr": "none",
+        "newline": "\\n",
+        "bin": "false",
+        "out": "char",
+        "addchar": "",
+        "responsetimeout": "10000"
+    }
+]
