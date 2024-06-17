@@ -1,0 +1,120 @@
+[
+    {
+        "id": "02351f985b49bf14",
+        "type": "tab",
+        "label": "Send Data to Database",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "5136e34e0941f3ed",
+        "type": "json",
+        "z": "02351f985b49bf14",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": true,
+        "x": 310,
+        "y": 300,
+        "wires": [
+            [
+                "8dbddcc6e8cbe5a5"
+            ]
+        ]
+    },
+    {
+        "id": "a3ccdf567d266f42",
+        "type": "mysql",
+        "z": "02351f985b49bf14",
+        "mydb": "fa965694a4e7a12c",
+        "name": "",
+        "x": 920,
+        "y": 300,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "23c0f961f16eec07",
+        "type": "serial in",
+        "z": "02351f985b49bf14",
+        "name": "",
+        "serial": "7cb1fc58c47d0193",
+        "x": 90,
+        "y": 300,
+        "wires": [
+            [
+                "5136e34e0941f3ed",
+                "0e089fc107dd704d"
+            ]
+        ]
+    },
+    {
+        "id": "8dbddcc6e8cbe5a5",
+        "type": "function",
+        "z": "02351f985b49bf14",
+        "name": "Arduino Data to Database",
+        "func": "var value=JSON.parse(JSON.stringify(msg.payload));\nvalue=msg;\nvar Data1 = msg.payload.UID;\nvar Data2 = msg.payload.Data;\nvar Data3 = msg.payload.Shuffle;\nmsg.payload = [Data1, Data2, Data3];\nmsg.topic = 'INSERT INTO nfc_card_data(UID, Data, Shuffle) VALUES (?,?,?);';\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 590,
+        "y": 300,
+        "wires": [
+            [
+                "a3ccdf567d266f42"
+            ]
+        ]
+    },
+    {
+        "id": "0e089fc107dd704d",
+        "type": "debug",
+        "z": "02351f985b49bf14",
+        "name": "Debug Input",
+        "active": true,
+        "tosidebar": true,
+        "console": true,
+        "tostatus": true,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "payload",
+        "statusType": "auto",
+        "x": 320,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "fa965694a4e7a12c",
+        "type": "MySQLdatabase",
+        "name": "DB NFC",
+        "host": "127.0.0.1",
+        "port": "3306",
+        "db": "nfc_db",
+        "tz": "",
+        "charset": "UTF8"
+    },
+    {
+        "id": "7cb1fc58c47d0193",
+        "type": "serial-port",
+        "name": "Arduino Port",
+        "serialport": "COM4",
+        "serialbaud": "9600",
+        "databits": "8",
+        "parity": "none",
+        "stopbits": "1",
+        "waitfor": "",
+        "dtr": "none",
+        "rts": "none",
+        "cts": "none",
+        "dsr": "none",
+        "newline": "\\n",
+        "bin": "false",
+        "out": "char",
+        "addchar": "",
+        "responsetimeout": "10000"
+    }
+]
