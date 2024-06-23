@@ -25,11 +25,11 @@ The proving step is conducted through the Arduino IDE in a validating process of
 4. Arduino IDE v2.3.3 or the latest version installed on the machine.
 
 ### Libraries used:
-a. Node-red:
+1. Node-red:
 	1.node-red-node-base64
 	2.node-red-node-mysql
 	3.node-red-node-serialport
-b. Arduino IDE:
+2. Arduino IDE:
 	1. SPI.h
 	2. AdaFruit_PN532.h
 	3. AES.h
