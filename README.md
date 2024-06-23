@@ -2,7 +2,7 @@
 
 Application of cryptography and gifshuffle security implementation designed as additional security of NFC card with type of MIFARE Classic. The design of security can prevent duplication attack on duplicated NFC card and the manager of NFC card can know if the user's card is indicated to be duplicated or not.
 
-##Key Features:
+## Key Features:
 1. Read NFC Data: The program design used in simulating to read of the content data from the Mifare Classic NFC card into the Arduino IDE.
 2. Write NFC Data: The program design used in simulating to write of the content data into the Mifare Classic NFC card through the Arduino IDE.
 3. Gifshuffle Algorithm: The design of the security algorithm program implemented in randomizing of the content data to be saved into the NFC card and database.
