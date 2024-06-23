@@ -34,3 +34,11 @@ The proving step is conducted through the Arduino IDE in a validating process of
 	2. AdaFruit_PN532.h
 	3. AES.h
 	4. Base64
+
+### Steps
+1. **Clone the repository:**
+	Open Terminal on the operating system used such as Git Bash, Powershell or Command Prompt and set the storage directory used in the clone project. Example:
+	```bash
+	git clone https://github.com/Ivan0187/Application-of-Cryptography-on-NFC-CARD-MIFARE
+	cd Application-of-Cryptography-on-NFC-CARD-MIFARE
+	```
