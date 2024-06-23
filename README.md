@@ -42,3 +42,4 @@ The proving step is conducted through the Arduino IDE in a validating process of
 	git clone https://github.com/Ivan0187/Application-of-Cryptography-on-NFC-CARD-MIFARE
 	cd Application-of-Cryptography-on-NFC-CARD-MIFARE
 	```
+ 2. **You can access the Installation Manual through the following link: TBA**
