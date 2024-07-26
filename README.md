@@ -11,6 +11,7 @@ Application of cryptography and gifshuffle security implementation designed as a
 6. **Read Data From Database:** The design of the program scheme applied in retrieving the content data stored from the database to the Arduino IDE through the node-red module.
 
 ## Proof of Concept:
+**Video Proof of Concept** : https://youtu.be/3uLGtTppmt0
 1. **Data Initialization on NFC access cards that have not been registered:** The implementation step in initializing data on NFC access card that has not been registered into the database through the Arduino IDE and node-red.
 2. **Data Validation Process on NFC access cards that have been registered:**
 The proving step is conducted through the Arduino IDE in a validating process of the content data from the NFC card registered in the database. There are two condition result get from the process of validating the data on the NFC card registered in the database:
